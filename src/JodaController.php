@@ -2,6 +2,7 @@
 
 namespace Ahmedjoda\Single;
 
+use Ahmedjoda\Single\Trait\SingleResources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -9,10 +10,11 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use ReflectionClass;
+use Illuminate\Http\Request;
 
 class JodaController extends Model
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources;
 
     final public function __construct()
     {
@@ -22,18 +24,7 @@ class JodaController extends Model
 
 
 
-    public function singleIndex()
-    {
-        if (method_exists($this, 'query')) {
-            ${$this->pluralName} = $this->query($this->model::query())->get();
-        } else {
-            ${$this->pluralName} = $this->model::all();
-        }
-        
-        $index = ${$this->pluralName};
-        $route = $this->route;
-        return view("{$this->view}.index", compact($this->pluralName, 'index', 'route'));
-    }
+    
 
 
     public function SingleCreate()
@@ -128,11 +119,12 @@ class JodaController extends Model
         }
 
         $reflector = new ReflectionClass($this);
-        $namespace = Str::lower(str_replace('App\Singles', '', $reflector->getNamespaceName())) ;
+        $namespace = Str::lower(str_replace('App\Singles\\', '', $reflector->getNamespaceName()));
+        $prefix = str_replace('app\singles', '', $namespace);
         
         if (!isset($this->view)) {
-            if ($namespace) {
-                $this->view = "$namespace.$name";
+            if ($prefix) {
+                $this->view = "$prefix.$name";
             } else {
                 $this->view = $name;
             }

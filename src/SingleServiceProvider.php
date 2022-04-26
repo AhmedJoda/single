@@ -17,7 +17,11 @@ class SingleServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'single');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'single');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        if (!is_dir('app/Singles')) {
+            mkdir("app/Singles", 0700);
+        }
+
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
