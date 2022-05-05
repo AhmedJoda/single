@@ -1,11 +1,11 @@
 {
-  "name": "ahmedjoda/single",
+  "name": "syscape-space/single",
   "description": "a pattern where you combine model and controller in one class",
   "keywords": [
     "ahmedjoda",
     "single"
   ],
-  "homepage": "https://github.com/ahmedjoda/single",
+  "homepage": "https://github.com/syscape-space/single",
   "license": "MIT",
   "type": "library",
   "authors": [

@@ -2,11 +2,12 @@
 
 namespace Ahmedjoda\Single;
 
-use Ahmedjoda\Single\Trait\SingleResources;
+use Ahmedjoda\Single\Traits\SingleResources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use ReflectionClass;
@@ -24,25 +25,28 @@ class JodaController extends Model
 
 
 
-    
+
 
 
     public function SingleCreate()
     {
+        $p_name = Str::ucfirst($this->pluralName);
         $route = $this->route;
         $title = trans('admin.create');
-        return view("{$this->view}.create", compact('route', 'title'));
+        $fields = $this->formFields();
+        return view("{$this->view}.create", compact('route', 'title','p_name','fields'));
     }
 
 
     public function singleStore()
     {
+
         $this->validateStoreRequest();
-        
+
         $this->beforeStore();
         $data = $this->uploadFilesIfExist();
-        $this->model::create($data);
-
+//        $this->model::create($data);
+        DB::table($this->table ?? $this->pluralName)->insert($data);
         $this->afterStore();
 
         session()->flash('success', trans('admin.added'));
@@ -62,18 +66,20 @@ class JodaController extends Model
 
     public function singleEdit($id)
     {
+        $p_name = Str::ucfirst($this->pluralName);
         ${$this->name} = $this->model::find($id);
         $edit = $this->model::find($id);
         $route = $this->route;
+        $fields = $this->formFields();
         $title = trans('admin.edit');
-        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title'));
+        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title','p_name','fields'));
     }
 
 
     public function singleUpdate($id)
     {
         $this->validateUpdateRequest();
-        
+
         $this->beforeUpdate();
 
         $data = $this->uploadFilesIfExist();
@@ -112,7 +118,7 @@ class JodaController extends Model
     {
         $array = explode('\\', Str::lower($this->model));
         $name = end($array);
-        
+
         if (!isset($this->name)) {
             $this->name = $name;
             $this->pluralName = Str::plural($this->name);
@@ -121,7 +127,7 @@ class JodaController extends Model
         $reflector = new ReflectionClass($this);
         $namespace = Str::lower(str_replace('App\Singles\\', '', $reflector->getNamespaceName()));
         $prefix = str_replace('app\singles', '', $namespace);
-        
+
         if (!isset($this->view)) {
             if ($prefix) {
                 $this->view = "$prefix.$name";
@@ -144,7 +150,7 @@ class JodaController extends Model
             request()->validate($rules);
         }
     }
-    
+
     public function validateUpdateRequest()
     {
         $rules = isset($this->model::$updateRules) ? $this->model::$updateRules :
@@ -180,7 +186,12 @@ class JodaController extends Model
             }
         }
     }
-
+    protected function formFields(){
+        return [];
+    }
+    protected function tableColumns(){
+        return [];
+    }
     public function beforeStore()
     {
     }

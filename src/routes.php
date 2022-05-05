@@ -6,7 +6,7 @@ use PHPUnit\TextUI\XmlConfiguration\Group;
 
 Route::namespace('App\Singles')->
 group(function () {
-    checkInside('app/Singles');
+    checkInside(base_path('app/Singles'));
 });
 
 
@@ -24,6 +24,7 @@ function checkInside($directory, $parent = null)
 
 function getInside($directory)
 {
+
     return  array_diff(scandir($directory), array('.', '..'));
 }
 

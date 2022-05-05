@@ -1,8 +1,14 @@
 <?php
 
 /*
- * You can place your custom package configuration in here.
+ * Single Co
  */
 return [
-
+    'app'   =>  [
+        'name' => 'SingleLte',
+        'route-prefix' => 'dashboard',
+    ],
+    'menu' => [
+        'view' => 'single::layout.menu',
+    ]
 ];

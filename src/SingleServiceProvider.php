@@ -2,6 +2,7 @@
 
 namespace Ahmedjoda\Single;
 
+use Ahmedjoda\Single\Console\CreateSingleModel;
 use Illuminate\Support\ServiceProvider;
 
 class SingleServiceProvider extends ServiceProvider
@@ -17,26 +18,26 @@ class SingleServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'single');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'single');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        if (!is_dir('app/Singles')) {
-            mkdir("app/Singles", 0700);
-        }
+//        if (!is_dir('app/Singles')) {
+//            mkdir("app/Singles", 0700);
+//        }
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');
-
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'single');
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('single.php'),
             ], 'config');
 
             // Publishing the views.
-            /*$this->publishes([
+            $this->publishes([
                 __DIR__.'/../resources/views' => resource_path('views/vendor/single'),
-            ], 'views');*/
+            ], 'views');
 
             // Publishing assets.
-            /*$this->publishes([
+            $this->publishes([
                 __DIR__.'/../resources/assets' => public_path('vendor/single'),
-            ], 'assets');*/
+            ], 'assets');
 
             // Publishing the translation files.
             /*$this->publishes([
@@ -44,7 +45,9 @@ class SingleServiceProvider extends ServiceProvider
             ], 'lang');*/
 
             // Registering package commands.
-            // $this->commands([]);
+             $this->commands([
+                 CreateSingleModel::class,
+             ]);
         }
     }
 
