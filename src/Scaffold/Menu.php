@@ -33,7 +33,8 @@ class Menu
         $single = $this->remove_php_extension($fileName);
         $route = Str::plural(Str::lower($single));
         $parent = Str::lower( $parent );
-        if ($parent  == config('single.app.route-prefix')) {
+        $prefix = str_replace('/','',request()->route()->getPrefix());
+        if ($parent  == ($prefix ??config('single.app.route-prefix'))) {
             array_push($this->items,[
                 'route'=>"$parent.$route.index",
                 'title'=>__("$parent.".Str::ucfirst($route))

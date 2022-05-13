@@ -7,13 +7,6 @@ use Ahmedjoda\Single\Single;
 class {{ class }} extends Single
 {
     # Define table data
-
-    protected $columns = [
-        [
-            'data'  =>  'id',
-            'title' =>  '#',
-        ], # NOTE: first Column
-    ];
     protected function formFields(){
         return [
             //$this->textField('name'),
