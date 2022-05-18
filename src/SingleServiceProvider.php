@@ -3,6 +3,7 @@
 namespace Ahmedjoda\Single;
 
 use Ahmedjoda\Single\Console\CreateSingleModel;
+use Ahmedjoda\Single\View\Components\Modal;
 use Illuminate\Support\ServiceProvider;
 
 class SingleServiceProvider extends ServiceProvider
@@ -24,6 +25,9 @@ class SingleServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__.'/routes.php');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'single');
+        $this->loadViewComponentsAs(__DIR__.'/../resources/views',[
+            Modal::class,
+        ]);
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/config.php' => config_path('single.php'),

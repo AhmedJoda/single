@@ -34,7 +34,7 @@ class JodaController extends Model
         $route = $this->route;
         $title = trans('admin.create');
         $fields = $this->formFields();
-        return view("{$this->view}.create", compact('route', 'title','p_name','fields'));
+        return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
     }
 
 
@@ -42,10 +42,11 @@ class JodaController extends Model
     {
 
         $this->validateStoreRequest();
-
+        $fields = $this->formFields();
         $this->beforeStore();
         $data = $this->uploadFilesIfExist();
 //        $this->model::create($data);
+
         DB::table($this->table ?? $this->pluralName)->insert($data);
         $this->afterStore();
 
@@ -81,7 +82,7 @@ class JodaController extends Model
         $this->validateUpdateRequest();
 
         $this->beforeUpdate();
-
+        $fields = $this->formFields();
         $data = $this->uploadFilesIfExist();
         $this->model::find($id)->update($data);
 
@@ -164,6 +165,7 @@ class JodaController extends Model
     {
         $data = request()->except("_token", '_method');
         if (isset($this->files)) {
+
             foreach ($this->files as $file) {
                 if (request()->hasFile($file) and request()->$file) {
                     $fileName =
@@ -172,7 +174,7 @@ class JodaController extends Model
                         request()->file($file)->getClientOriginalExtension();
                     $filePath = "$this->pluralName/$fileName";
                     $data[$file] = $filePath;
-                    Storage::disk('local')->put($filePath, file_get_contents(request()->$file));
+                    Storage::disk(config('single.app.filesystem-disk'))->put($filePath, file_get_contents(request()->$file));
                 }
             }
         }
@@ -185,6 +187,9 @@ class JodaController extends Model
                 Storage::delete($model->$file);
             }
         }
+    }
+    public function setCreateView(){
+        return 'single::master.create';
     }
     protected function formFields(){
         return [];

@@ -9,50 +9,20 @@ use Illuminate\Support\Str;
 
 class Menu
 {
-    public $items = [];
-    function checkInside($directory, $parent = null)
-    {
-        foreach ($this->getInside($directory) as $fileName) {
-            $file  = strpos($fileName, '.php');
-            if ($file) {
-                $this->addItems($fileName, $parent);
-            } else {
-                $this->checkInside("$directory/$fileName", $fileName);
-            }
-        }
-    }
 
-    function getInside($directory)
+    protected function getItems()
     {
-
-        return  array_diff(scandir($directory), array('.', '..'));
-    }
-
-    function addItems($fileName, $parent = null)
-    {
-        $single = $this->remove_php_extension($fileName);
-        $route = Str::plural(Str::lower($single));
-        $parent = Str::lower( $parent );
+        $menuItems = config('single.menu.items',[]);
         $prefix = str_replace('/','',request()->route()->getPrefix());
-        if ($parent  == ($prefix ??config('single.app.route-prefix'))) {
-            array_push($this->items,[
-                'route'=>"$parent.$route.index",
-                'title'=>__("$parent.".Str::ucfirst($route))
-            ]);
+        if (isset($menuItems[$prefix])){
+            return $menuItems[$prefix];
+        }else{
+            return [];
         }
     }
 
-    function remove_php_extension($fileName)
-    {
-        return str_replace(".php", "", $fileName);
-    }
     public function render(){
-        if (config('single.menu.items')){
-            // TODO: custom items
-        }else{
-            $this->checkInside(base_path('app/Singles'));
-            return view(config('single.menu.view'),['items'=>$this->items]);
-        }
+        return view(config('single.menu.view'),['items'=>$this->getItems()]);
     }
     public static function get(){
         $menu = new static();
