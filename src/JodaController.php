@@ -26,14 +26,14 @@ class JodaController extends Model
 
 
 
-
+    public function fields(): array { return []; }
 
     public function SingleCreate()
     {
         $p_name = Str::ucfirst($this->pluralName);
         $route = $this->route;
         $title = trans('admin.create');
-        $fields = $this->formFields();
+        $fields = $this->fields();
         return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
     }
 
@@ -71,7 +71,7 @@ class JodaController extends Model
         ${$this->name} = $this->model::find($id);
         $edit = $this->model::find($id);
         $route = $this->route;
-        $fields = $this->formFields();
+        $fields = $this->fields();
         $title = trans('admin.edit');
         return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title','p_name','fields'));
     }
@@ -164,18 +164,15 @@ class JodaController extends Model
     public function uploadFilesIfExist()
     {
         $data = request()->except("_token", '_method');
-        if (isset($this->files)) {
-
-            foreach ($this->files as $file) {
-                if (request()->hasFile($file) and request()->$file) {
-                    $fileName =
-                        (auth()->user() ? auth()->user()->id : '') . '-' .
-                        time() . '.' .
-                        request()->file($file)->getClientOriginalExtension();
-                    $filePath = "$this->pluralName/$fileName";
-                    $data[$file] = $filePath;
-                    Storage::disk(config('single.app.filesystem-disk'))->put($filePath, file_get_contents(request()->$file));
-                }
+        foreach ($this->fields() as $field){
+            if ($field->isFile() and request()->hasFile($field->getName()) and request($field->getName())) {
+                $fileName =
+                    (auth()->user() ? auth()->user()->id : '') . '-' .
+                    time() . '.' .
+                    request()->file($field->getName())->getClientOriginalExtension();
+                $filePath = "$this->pluralName/$fileName";
+                $data[$field->getName()] = $filePath;
+                Storage::disk(config('single.app.filesystem-disk'))->put($filePath, file_get_contents(request($field->getName())));
             }
         }
         return $data;

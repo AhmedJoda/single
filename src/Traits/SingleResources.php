@@ -16,7 +16,7 @@ trait SingleResources
         $p_name = Str::ucfirst($this->pluralName);
         $index = ${$this->pluralName};
         $route = $this->route;
-        $columns = $this->tableColumns();
-        return view("{$this->view}.index", compact($this->pluralName, 'index', 'route','p_name','columns'));
+        $fields = $this->fields();
+        return view("{$this->view}.index", compact($this->pluralName, 'index', 'route','p_name','fields'));
     }
 }

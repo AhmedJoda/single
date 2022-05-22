@@ -18,9 +18,7 @@
                 @method('PUT')
                 <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                     @foreach($fields as $field)
-                        @if($field['editable'])
-                            @include($field['view'],$field)
-                        @endif
+                        @include($field->getViewName(),compact('field'))
                     @endforeach
                     <div class="p-2">
                         <button

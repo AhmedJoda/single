@@ -13,4 +13,5 @@ class Single extends JodaSingle
     protected $guarded = [];
     protected $files = [];
     protected $view = 'single::master';
+//    TODO : pagination
 }

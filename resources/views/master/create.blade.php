@@ -17,7 +17,7 @@
                 @csrf
                 <div class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800">
                     @foreach($fields as $field)
-                        @include($field['view'],$field)
+                        @include($field->getViewName(),compact('field'))
                     @endforeach
                     <div class="p-2">
                         <button
