@@ -6,17 +6,12 @@ use Ahmedjoda\Single\Single;
 
 class {{ class }} extends Single
 {
-    # Define table data
-    protected function formFields(){
-        return [
-            //$this->textField('name'),
-        ];
-    }
-    protected function tableColumns(){
-        return [
-            //$this->textColumn('Name','name'),
-        ];
-    }
+    public function fields(): array
+        {
+            return [
+                # Text::make('Title'),
+            ];
+        }
 
 }
 
