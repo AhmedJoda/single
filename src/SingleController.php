@@ -2,6 +2,7 @@
 
 namespace Syscape\Single;
 
+use Syscape\Single\Scaffold\Tables\Table;
 use Syscape\Single\Traits\SingleResources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -23,7 +24,19 @@ class SingleController extends Model
         $this->initAttributeNames();
     }
 
-
+    public function singleIndex()
+    {
+        if (method_exists($this, 'query')) {
+            ${$this->pluralName} = $this->query($this->model::query())->get();
+        } else {
+            ${$this->pluralName} = $this->model::all();
+        }
+        $p_name = Str::ucfirst($this->pluralName);
+        $index = ${$this->pluralName};
+        $route = $this->route;
+        $table = Table::make($this->fields())->model($this->model)->route($route);
+        return view("{$this->view}.index", compact($this->pluralName, 'index', 'route','p_name','table'));
+    }
 
 
     public function fields(): array { return []; }

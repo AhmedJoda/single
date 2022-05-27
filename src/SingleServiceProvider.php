@@ -2,7 +2,9 @@
 
 namespace Syscape\Single;
 
+use Livewire\Livewire;
 use Syscape\Single\Console\CreateSingleModel;
+use Syscape\Single\Livewire\SingleTable;
 use Syscape\Single\View\Components\Modal;
 use Illuminate\Support\ServiceProvider;
 

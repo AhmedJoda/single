@@ -19,7 +19,10 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
     />
-{{--    <script src="{{asset('vendor/single')}}/js/charts-lines.js" defer></script>--}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{asset('vendor/single')}}/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 
 </head>
 <body>
