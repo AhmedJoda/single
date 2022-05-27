@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ahmedjoda\Single\Traits;
+namespace Syscape\Single\Traits;
 
 
 use Illuminate\Support\Facades\Route;

@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use Ahmedjoda\Single\Single;
+use Syscape\Single\Single;
 
 class {{ class }} extends Single
 {

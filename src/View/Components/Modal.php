@@ -1,6 +1,6 @@
 <?php
 
-namespace Ahmedjoda\Single\View\Components;
+namespace Syscape\Single\View\Components;
 use Illuminate\View\Component;
 
 class Modal extends Component

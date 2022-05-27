@@ -2,7 +2,7 @@
   "name": "syscape-space/single",
   "description": "a pattern where you combine model and controller in one class",
   "keywords": [
-    "ahmedjoda",
+    "Syscape",
     "single"
   ],
   "homepage": "https://github.com/syscape-space/single",
@@ -11,7 +11,7 @@
   "authors": [
     {
       "name": "Ahmed Joda",
-      "email": "ahmedjoda02@gmail.com",
+      "email": "Syscape02@gmail.com",
       "role": "Developer"
     }
   ],
@@ -25,12 +25,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Ahmedjoda\\Single\\": "src"
+      "Syscape\\Single\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Ahmedjoda\\Single\\Tests\\": "tests"
+      "Syscape\\Single\\Tests\\": "tests"
     }
   },
   "scripts": {
@@ -43,10 +43,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Ahmedjoda\\Single\\SingleServiceProvider"
+        "Syscape\\Single\\SingleServiceProvider"
       ],
       "aliases": {
-        "Single": "Ahmedjoda\\Single\\SingleFacade"
+        "Single": "Syscape\\Single\\SingleFacade"
       }
     }
   }

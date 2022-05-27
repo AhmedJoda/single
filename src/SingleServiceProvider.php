@@ -1,9 +1,9 @@
 <?php
 
-namespace Ahmedjoda\Single;
+namespace Syscape\Single;
 
-use Ahmedjoda\Single\Console\CreateSingleModel;
-use Ahmedjoda\Single\View\Components\Modal;
+use Syscape\Single\Console\CreateSingleModel;
+use Syscape\Single\View\Components\Modal;
 use Illuminate\Support\ServiceProvider;
 
 class SingleServiceProvider extends ServiceProvider

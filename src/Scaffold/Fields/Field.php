@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ahmedjoda\Single\Scaffold\Fields;
+namespace Syscape\Single\Scaffold\Fields;
 
 
 use Illuminate\Support\Str;

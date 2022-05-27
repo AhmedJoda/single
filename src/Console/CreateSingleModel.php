@@ -1,5 +1,5 @@
 <?php
-namespace Ahmedjoda\Single\Console;
+namespace Syscape\Single\Console;
 
 
 use Illuminate\Console\GeneratorCommand;

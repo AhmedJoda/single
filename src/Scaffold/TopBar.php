@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ahmedjoda\Single\Scaffold;
+namespace Syscape\Single\Scaffold;
 
 
 use Illuminate\Support\Facades\Route;

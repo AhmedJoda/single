@@ -1,12 +1,12 @@
 <?php
 
-namespace Ahmedjoda\Single;
+namespace Syscape\Single;
 
-use Ahmedjoda\Single\Traits\DataTable;
-use Ahmedjoda\Single\Traits\FormFields;
-use Ahmedjoda\Single\Traits\HasSingleRoutes;
+use Syscape\Single\Traits\DataTable;
+use Syscape\Single\Traits\FormFields;
+use Syscape\Single\Traits\HasSingleRoutes;
 
-class Single extends JodaSingle
+class Single extends SingleModel
 {
     use HasSingleRoutes;
     use FormFields,DataTable;

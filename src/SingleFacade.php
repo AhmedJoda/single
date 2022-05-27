@@ -1,11 +1,11 @@
 <?php
 
-namespace Ahmedjoda\Single;
+namespace Syscape\Single;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Ahmedjoda\Single\Skeleton\SkeletonClass
+ * @see \Syscape\Single\Skeleton\SkeletonClass
  */
 class SingleFacade extends Facade
 {

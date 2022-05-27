@@ -1,8 +1,8 @@
 <?php
 
-namespace Ahmedjoda\Single;
+namespace Syscape\Single;
 
-use Ahmedjoda\Single\Traits\SingleResources;
+use Syscape\Single\Traits\SingleResources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use ReflectionClass;
 use Illuminate\Http\Request;
 
-class JodaController extends Model
+class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources;
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Ahmedjoda\Single;
+namespace Syscape\Single;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class JodaModel extends JodaController
+class SingleModel extends SingleController
 {
     use HasFactory;
 }

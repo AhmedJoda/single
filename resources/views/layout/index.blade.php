@@ -19,12 +19,8 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"
     />
-    <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
-        defer
-    ></script>
-    <script src="{{asset('vendor/single')}}/js/charts-lines.js" defer></script>
-    <script src="{{asset('vendor/single')}}/js/charts-pie.js" defer></script>
+{{--    <script src="{{asset('vendor/single')}}/js/charts-lines.js" defer></script>--}}
+
 </head>
 <body>
 <div
@@ -32,7 +28,7 @@
     :class="{ 'overflow-hidden': isSideMenuOpen }"
 >
     <!-- Desktop sidebar -->
-    {!! \Ahmedjoda\Single\Scaffold\Menu::get() !!}
+    {!! \Syscape\Single\Scaffold\Menu::get() !!}
     <div class="flex flex-col flex-1 w-full">
         <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
             <div
@@ -192,7 +188,7 @@
                         </template>
                     </li>
                     <!-- Profile menu -->
-                    {!! \Ahmedjoda\Single\Scaffold\TopBar::getUserLinks() !!}
+                    {!! \Syscape\Single\Scaffold\TopBar::getUserLinks() !!}
                 </ul>
             </div>
         </header>
@@ -201,6 +197,10 @@
         </main>
     </div>
 </div>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
+></script>
+@stack('page-scripts')
 </body>
 </html>
 
