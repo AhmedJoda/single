@@ -1,5 +1,5 @@
 <div>
-    <div class="w-full overflow-x-auto text-gray-800 dark:text-white">
+    <div class="w-full overflow-x-auto text-gray-800 dark:text-white p-4">
         <table id="single-table" data-page-length='{{$table->getPaginationLength()}}' class="w-full whitespace-no-wrap">
             <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
@@ -10,7 +10,7 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-            @forelse($table->getData() as $item)
+            @foreach($table->getData() as $item)
                 <tr class="text-gray-700 dark:text-gray-400">
                     @foreach($table->getFields() as $field)
                         <td class="px-4 py-3 text-center">
@@ -36,13 +36,7 @@
                         </div>
                     </td>
                 </tr>
-            @empty
-                <tr class="text-gray-700 dark:text-gray-400">
-                    <td class="px-4 py-3 text-center" colspan="100">
-                        NO DATA
-                    </td>
-                </tr>
-            @endforelse
+            @endforeach
             </tbody>
         </table>
     </div>
