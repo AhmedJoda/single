@@ -11,7 +11,12 @@
   "authors": [
     {
       "name": "Ahmed Joda",
-      "email": "Syscape02@gmail.com",
+      "email": "ahmedjoda02@gmail.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Ahmed Tofaha",
+      "email": "ahmedtofaha999@gmail.com",
       "role": "Developer"
     }
   ],
