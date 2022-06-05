@@ -5,9 +5,11 @@ namespace Syscape\Single\Scaffold\Fields;
 
 
 use Illuminate\Support\Str;
+use Syscape\Single\Traits\fieldHasRules;
 
 class Field
 {
+    use fieldHasRules;
     protected $field_title;
     protected $field_name;
     protected $editable = true;

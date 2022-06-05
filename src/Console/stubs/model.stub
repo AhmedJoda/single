@@ -3,7 +3,7 @@
 namespace {{ namespace }};
 
 use Syscape\Single\Single;
-
+use Syscape\Single\Scaffold\Fields\Text;
 class {{ class }} extends Single
 {
     public function fields(): array

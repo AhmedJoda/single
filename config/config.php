@@ -30,6 +30,10 @@ return [
 //                    'route' => 'dashboard.home',
 //                    'icon-class' => 'fa-solid fa-house'
 //                ], # an example of menu item
+//                 [
+//                    'single' => 'Dashboard\\Model',
+//                ], # an example of menu item using single name
+//
 //            ]
         ]
     ]

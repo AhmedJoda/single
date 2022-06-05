@@ -6,4 +6,7 @@
         <option  {{old($field->getName(),isset($edit) ?  $edit->getOriginal($field->getName()) : '') == $value ? "selected":""}} value="{{$value}}">{{$option}}</option>
         @endforeach
     </select>
+    @error($field->getName())
+    <p class="text-red-600 m-1">{{$message}}</p>
+    @enderror
 </label>

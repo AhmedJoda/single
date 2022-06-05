@@ -3,12 +3,14 @@ namespace Syscape\Single\Console;
 
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Filesystem\Filesystem;
 
 class CreateSingleModel extends GeneratorCommand
 {
     protected $name = 'single:model';
     protected $description = 'Create new Single Model Class in Single Folder';
     protected $type = "model";
+
     protected function getStub()
     {
         return __DIR__ . '/stubs/model.stub';

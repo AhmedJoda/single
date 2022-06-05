@@ -34,8 +34,15 @@ class SingleController extends Model
         $p_name = Str::ucfirst($this->pluralName);
         $index = ${$this->pluralName};
         $route = $this->route;
+        $title = $this->getIndexTitle();
         $table = Table::make($this->fields())->model($this->model)->route($route);
-        return view("{$this->view}.index", compact($this->pluralName, 'index', 'route','p_name','table'));
+        return view("{$this->view}.index", compact($this->pluralName, 'index','title', 'route','p_name','table'));
+    }
+    public function getIndexRoute(){
+        return $this->route.'.index';
+    }
+    public function getIndexTitle(){
+        return __($this->route);
     }
 
 
@@ -55,7 +62,6 @@ class SingleController extends Model
     {
 
         $this->validateStoreRequest();
-        $fields = $this->formFields();
         $this->beforeStore();
         $data = $this->uploadFilesIfExist();
 //        $this->model::create($data);
@@ -95,7 +101,6 @@ class SingleController extends Model
         $this->validateUpdateRequest();
 
         $this->beforeUpdate();
-        $fields = $this->formFields();
         $data = $this->uploadFilesIfExist();
         $this->model::find($id)->update($data);
 
@@ -158,20 +163,26 @@ class SingleController extends Model
 
     public function validateStoreRequest()
     {
-        $rules = isset($this->model::$storeRules) ? $this->model::$storeRules :
-            (isset($this->model::$rules) ? $this->model::$rules : null);
-        if ($rules) {
-            request()->validate($rules);
+        request()->validate($this->getStoreRules());
+    }
+    public function getStoreRules(){
+        $rules  = [];
+        foreach ($this->fields() as $field){
+            $rules[$field->getName()] = $field->getStoreRules();
         }
+        return $rules;
+    }
+    public function getUpdateRules(){
+        $rules  = [];
+        foreach ($this->fields() as $field){
+            $rules[$field->getName()] = $field->getUpdateRules();
+        }
+        return $rules;
     }
 
     public function validateUpdateRequest()
     {
-        $rules = isset($this->model::$updateRules) ? $this->model::$updateRules :
-            (isset($this->model::$rules) ? $this->model::$rules : null);
-        if ($rules) {
-            request()->validate($rules);
-        }
+        request()->validate($this->getUpdateRules());
     }
 
     public function uploadFilesIfExist()
@@ -200,12 +211,6 @@ class SingleController extends Model
     }
     public function setCreateView(){
         return 'single::master.create';
-    }
-    protected function formFields(){
-        return [];
-    }
-    protected function tableColumns(){
-        return [];
     }
     public function beforeStore()
     {

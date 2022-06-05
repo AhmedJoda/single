@@ -2,7 +2,7 @@
 @section('content')
     <div class="container grid px-6 py-6 mx-auto " style="padding-top: 1.5rem">
         <h4 class="mb-4 text-lg font-semibold text-gray-600 dark:text-gray-300">
-            {{__(config('single.app.route-prefix').'.'.$p_name)}}
+            {{$title}}
         </h4>
         <div class="p-2">
             <a style="width: 100px" href="{{route("$route.create")}}" class="w-1/2 flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
