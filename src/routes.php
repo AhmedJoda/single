@@ -4,11 +4,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use PHPUnit\TextUI\XmlConfiguration\Group;
 
-if (! is_dir(base_path('app\Singles'))){
-    mkdir(base_path('app\Singles'));
+if (! is_dir(base_path('app/Singles'))){
+    mkdir(base_path('app/Singles'));
 }
 
-checkInside(base_path('app\Singles'));
+checkInside(base_path('app/Singles'));
 
 
 
