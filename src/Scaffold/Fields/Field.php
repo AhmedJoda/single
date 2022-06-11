@@ -13,16 +13,27 @@ class Field
     protected $field_title;
     protected $field_name;
     protected $editable = true;
+    protected $createable = true;
     protected $sortable = true;
     protected $searchable = true;
     protected $show_in_index = true;
     protected $field_view;
     protected $field_default = '';
+    protected $field_callvalue;
     public function hashIt() : bool {
         return false;
     }
     public function indexLabel($item){
         return $item->getOriginal($this->getName()) ?? $this->getDefaultValue();
+    }
+    public function getTableValue($item){
+        if ($this->field_callvalue){
+            return $this->field_callvalue($item);
+        }
+        return $this->indexLabel($item);
+    }
+    public function tableValue(callable $call){
+        $this->field_callvalue = $call;
     }
     public function __construct($title,$name)
     {
@@ -42,6 +53,11 @@ class Field
         $this->editable = $editable;
         return $this;
     }
+    public function createable($createable = true)
+    {
+        $this->createable = $createable;
+        return $this;
+    }
     public function sortable($sortable = true)
     {
         $this->sortable = $sortable;
@@ -54,6 +70,8 @@ class Field
     }
     public function isEditable(): bool
     { return $this->editable;}
+    public function isCreateable(): bool
+    { return $this->createable;}
     public function isSortable(): bool
     { return $this->sortable;}
     public function isSearchable(): bool
