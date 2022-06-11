@@ -18,6 +18,9 @@ class Field
     protected $show_in_index = true;
     protected $field_view;
     protected $field_default = '';
+    public function hashIt() : bool {
+        return false;
+    }
     public function indexLabel($item){
         return $item->getOriginal($this->getName()) ?? $this->getDefaultValue();
     }

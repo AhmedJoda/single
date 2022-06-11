@@ -2,6 +2,8 @@
 
 namespace Syscape\Single;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Syscape\Single\Scaffold\Tables\Table;
 use Syscape\Single\Traits\SingleResources;
 use Illuminate\Database\Eloquent\Model;
@@ -57,15 +59,23 @@ class SingleController extends Model
         return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
     }
 
-
+    protected function hashingFeilds($data){
+        foreach ($this->fields() as $field){
+            if ($field->hashIt() and $data[$field->getName()]){
+                $data[$field->getName()] = Hash::make($data[$field->getName()]);
+            }
+        }
+        return $data;
+    }
     public function singleStore()
     {
 
         $this->validateStoreRequest();
         $this->beforeStore();
-        $data = $this->uploadFilesIfExist();
+        $data = $this->hashingFeilds($this->uploadFilesIfExist());
+        $data['created_at'] = Carbon::now()->toDateTimeString();
+        $data['updated_at'] = Carbon::now()->toDateTimeString();
 //        $this->model::create($data);
-
         DB::table($this->table ?? $this->pluralName)->insert($data);
         $this->afterStore();
 
@@ -101,7 +111,7 @@ class SingleController extends Model
         $this->validateUpdateRequest();
 
         $this->beforeUpdate();
-        $data = $this->uploadFilesIfExist();
+        $data = $this->hashingFeilds($this->uploadFilesIfExist());
         $this->model::find($id)->update($data);
 
         $this->afterUpdate();

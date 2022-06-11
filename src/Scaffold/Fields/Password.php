@@ -11,4 +11,7 @@ class Password extends Field
     {
         return new self($title,$name);
     }
+    public function hashIt() : bool {
+        return true;
+    }
 }
