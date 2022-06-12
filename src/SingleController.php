@@ -60,8 +60,8 @@ class SingleController extends Model
         $data = $this->hashingFeilds($this->uploadFilesIfExist());
         $data['created_at'] = Carbon::now()->toDateTimeString();
         $data['updated_at'] = Carbon::now()->toDateTimeString();
-//        static::query()->create($data);
-        $id = DB::table(static::getTable())->insertGetId($data);
+        static::query()->create($data);
+//        $id = DB::table(static::getTable())->insertGetId($data);
         $this->item = static::query()->find($id);
         $this->afterStore();
 
