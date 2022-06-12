@@ -21,6 +21,11 @@ class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources,ScaffoldTrait;
     protected $item;
+    public $model;
+    public $pluralName;
+    public $name;
+    public $route;
+
     final public function __construct()
     {
         $this->setModelName();
@@ -42,27 +47,28 @@ class SingleController extends Model
         $instance = $this;
         return view("{$this->view}.index", compact($this->pluralName, 'index','instance','title', 'route','p_name','table'));
     }
+
     public function SingleCreate()
     {
         $p_name = Str::ucfirst($this->pluralName);
         $route = $this->route;
         $title = trans('admin.create');
         $fields = $this->fields();
-        return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
+        return view($this->setCreateView(), compact('route', 'title', 'p_name', 'fields'));
     }
 
 
     public function singleStore()
     {
-
         $this->validateStoreRequest();
         $this->beforeStore();
+
         $data = $this->hashingFeilds($this->uploadFilesIfExist());
-        $data['created_at'] = Carbon::now()->toDateTimeString();
-        $data['updated_at'] = Carbon::now()->toDateTimeString();
-        static::query()->create($data);
-//        $id = DB::table(static::getTable())->insertGetId($data);
-        $this->item = static::query()->find($id);
+
+        $model = new $this->model;
+        $model->fill($data);
+        $model->save();
+        
         $this->afterStore();
 
         session()->flash('success', trans('admin.added'));
@@ -88,7 +94,7 @@ class SingleController extends Model
         $route = $this->route;
         $fields = $this->fields();
         $title = trans('admin.edit');
-        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title','p_name','fields'));
+        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title', 'p_name', 'fields'));
     }
 
 
