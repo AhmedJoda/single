@@ -5,6 +5,7 @@ namespace Syscape\Single;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Syscape\Single\Scaffold\Tables\Table;
+use Syscape\Single\Traits\ScaffoldTrait;
 use Syscape\Single\Traits\SingleResources;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -18,8 +19,8 @@ use Illuminate\Http\Request;
 
 class SingleController extends Model
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources;
-
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources,ScaffoldTrait;
+    protected $item;
     final public function __construct()
     {
         $this->setModelName();
@@ -38,18 +39,9 @@ class SingleController extends Model
         $route = $this->route;
         $title = $this->getIndexTitle();
         $table = Table::make($this->fields())->model($this->model)->route($route);
-        return view("{$this->view}.index", compact($this->pluralName, 'index','title', 'route','p_name','table'));
+        $instance = $this;
+        return view("{$this->view}.index", compact($this->pluralName, 'index','instance','title', 'route','p_name','table'));
     }
-    public function getIndexRoute(){
-        return $this->route.'.index';
-    }
-    public function getIndexTitle(){
-        return __($this->route);
-    }
-
-
-    public function fields(): array { return []; }
-
     public function SingleCreate()
     {
         $p_name = Str::ucfirst($this->pluralName);
@@ -59,14 +51,7 @@ class SingleController extends Model
         return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
     }
 
-    protected function hashingFeilds($data){
-        foreach ($this->fields() as $field){
-            if ($field->hashIt() and $data[$field->getName()]){
-                $data[$field->getName()] = Hash::make($data[$field->getName()]);
-            }
-        }
-        return $data;
-    }
+
     public function singleStore()
     {
 
@@ -75,8 +60,9 @@ class SingleController extends Model
         $data = $this->hashingFeilds($this->uploadFilesIfExist());
         $data['created_at'] = Carbon::now()->toDateTimeString();
         $data['updated_at'] = Carbon::now()->toDateTimeString();
-//        $this->model::create($data);
-        DB::table($this->table ?? $this->pluralName)->insert($data);
+//        static::query()->create($data);
+        $id = DB::table(static::getTable())->insertGetId($data);
+        $this->item = static::query()->find($id);
         $this->afterStore();
 
         session()->flash('success', trans('admin.added'));
@@ -137,110 +123,4 @@ class SingleController extends Model
         return redirect(route("$this->route.index"));
     }
 
-    public function setModelName()
-    {
-        $reflector = new ReflectionClass($this);
-        $this->model = $reflector->name;
-    }
-
-    public function initAttributeNames()
-    {
-        $array = explode('\\', Str::lower($this->model));
-        $name = end($array);
-
-        if (!isset($this->name)) {
-            $this->name = $name;
-            $this->pluralName = Str::plural($this->name);
-        }
-
-        $reflector = new ReflectionClass($this);
-        $namespace = Str::lower(str_replace('App\Singles\\', '', $reflector->getNamespaceName()));
-        $prefix = str_replace('app\singles', '', $namespace);
-
-        if (!isset($this->view)) {
-            if ($prefix) {
-                $this->view = "$prefix.$name";
-            } else {
-                $this->view = $name;
-            }
-        }
-
-        if (!isset($this->route)) {
-            $this->route = "$namespace.$this->pluralName"  ;
-        }
-    }
-
-
-    public function validateStoreRequest()
-    {
-        request()->validate($this->getStoreRules());
-    }
-    public function getStoreRules(){
-        $rules  = [];
-        foreach ($this->fields() as $field){
-            $rules[$field->getName()] = $field->getStoreRules();
-        }
-        return $rules;
-    }
-    public function getUpdateRules(){
-        $rules  = [];
-        foreach ($this->fields() as $field){
-            $rules[$field->getName()] = $field->getUpdateRules();
-        }
-        return $rules;
-    }
-
-    public function validateUpdateRequest()
-    {
-        request()->validate($this->getUpdateRules());
-    }
-
-    public function uploadFilesIfExist()
-    {
-        $data = request()->except("_token", '_method');
-        foreach ($this->fields() as $field){
-            if ($field->isFile() and request()->hasFile($field->getName()) and request($field->getName())) {
-                $fileName =
-                    (auth()->user() ? auth()->user()->id : '') . '-' .
-                    time() . '.' .
-                    request()->file($field->getName())->getClientOriginalExtension();
-                $filePath = "$this->pluralName/$fileName";
-                $data[$field->getName()] = $filePath;
-                Storage::disk(config('single.app.filesystem-disk'))->put($filePath, file_get_contents(request($field->getName())));
-            }
-        }
-        return $data;
-    }
-    public function deleteFilesIfExist($model)
-    {
-        if (isset($this->files)) {
-            foreach ($this->files as $file) {
-                Storage::delete($model->$file);
-            }
-        }
-    }
-    public function setCreateView(){
-        return 'single::master.create';
-    }
-    public function beforeStore()
-    {
-    }
-
-    public function afterStore()
-    {
-    }
-    public function beforeUpdate()
-    {
-    }
-
-    public function afterUpdate()
-    {
-    }
-    public function beforeDestroy()
-    {
-    }
-
-    public function afterDestroy()
-    {
-    }
 }
