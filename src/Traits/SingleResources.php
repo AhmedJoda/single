@@ -12,6 +12,8 @@ trait SingleResources
         foreach ($this->fields() as $field){
             if ($field->hashIt() and $data[$field->getName()]){
                 $data[$field->getName()] = Hash::make($data[$field->getName()]);
+            }elseif ($field->hashIt()){
+                unset($data[$field->getName()]);
             }
         }
         return $data;

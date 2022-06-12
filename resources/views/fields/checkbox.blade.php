@@ -1,8 +1,13 @@
 <label class="block text-sm p-2">
-    <span class="text-gray-700 dark:text-gray-400">{{$field->getTitle()}}</span>
-    <input type="checkbox" value="{{$field->getCheckedValue()}}" name="{{$field->getName()}}"
+    <input type="hidden" name="{{$field->getName()}}" value="{{$field->getUncheckValue()}}">
+    <input id="field-{{$field->getName()}}" type="checkbox" value="{{$field->getCheckedValue()}}" name="{{$field->getName()}}"
+           @isset($edit)
            {{old($field->getName(),$edit->getOriginal($field->getName())?? '') == $field->getCheckedValue() ? "checked" : ""}}
-           class="block" placeholder="{{$field->getTitle()}}">
+           @else
+           {{old($field->getName()) == $field->getCheckedValue() ? "checked" : ""}}
+           @endisset
+           class="form-checkbox" placeholder="{{$field->getTitle()}}">
+    <label for="field-{{$field->getName()}}" class="text-gray-700 dark:text-gray-400">{{$field->getTitle()}}</label>
     @error($field->getName())
     <p class="text-red-600 m-1">{{$message}}</p>
     @enderror
