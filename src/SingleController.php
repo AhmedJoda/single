@@ -19,6 +19,10 @@ use Illuminate\Http\Request;
 class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources;
+    public $model;
+    public $pluralName;
+    public $name;
+    public $route;
 
     final public function __construct()
     {
@@ -38,17 +42,19 @@ class SingleController extends Model
         $route = $this->route;
         $title = $this->getIndexTitle();
         $table = Table::make($this->fields())->model($this->model)->route($route);
-        return view("{$this->view}.index", compact($this->pluralName, 'index','title', 'route','p_name','table'));
+        return view("{$this->view}.index", compact($this->pluralName, 'index', 'title', 'route', 'p_name', 'table'));
     }
-    public function getIndexRoute(){
+    public function getIndexRoute()
+    {
         return $this->route.'.index';
     }
-    public function getIndexTitle(){
+    public function getIndexTitle()
+    {
         return __($this->route);
     }
 
 
-    public function fields(): array { return []; }
+   
 
     public function SingleCreate()
     {
@@ -56,12 +62,13 @@ class SingleController extends Model
         $route = $this->route;
         $title = trans('admin.create');
         $fields = $this->fields();
-        return view($this->setCreateView(), compact('route', 'title','p_name','fields'));
+        return view($this->setCreateView(), compact('route', 'title', 'p_name', 'fields'));
     }
 
-    protected function hashingFeilds($data){
-        foreach ($this->fields() as $field){
-            if ($field->hashIt() and $data[$field->getName()]){
+    protected function hashingFelids($data)
+    {
+        foreach ($this->fields() as $field) {
+            if ($field->hashIt() and $data[$field->getName()]) {
                 $data[$field->getName()] = Hash::make($data[$field->getName()]);
             }
         }
@@ -69,14 +76,14 @@ class SingleController extends Model
     }
     public function singleStore()
     {
-
         $this->validateStoreRequest();
         $this->beforeStore();
-        $data = $this->hashingFeilds($this->uploadFilesIfExist());
-        $data['created_at'] = Carbon::now()->toDateTimeString();
-        $data['updated_at'] = Carbon::now()->toDateTimeString();
-//        $this->model::create($data);
-        DB::table($this->table ?? $this->pluralName)->insert($data);
+        $data = $this->hashingFelids($this->uploadFilesIfExist());
+
+        $model = new $this->model;
+        $model->fill($data);
+        $model->save();
+        
         $this->afterStore();
 
         session()->flash('success', trans('admin.added'));
@@ -102,7 +109,7 @@ class SingleController extends Model
         $route = $this->route;
         $fields = $this->fields();
         $title = trans('admin.edit');
-        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title','p_name','fields'));
+        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title', 'p_name', 'fields'));
     }
 
 
@@ -111,7 +118,7 @@ class SingleController extends Model
         $this->validateUpdateRequest();
 
         $this->beforeUpdate();
-        $data = $this->hashingFeilds($this->uploadFilesIfExist());
+        $data = $this->hashingFelids($this->uploadFilesIfExist());
         $this->model::find($id)->update($data);
 
         $this->afterUpdate();
@@ -175,16 +182,18 @@ class SingleController extends Model
     {
         request()->validate($this->getStoreRules());
     }
-    public function getStoreRules(){
+    public function getStoreRules()
+    {
         $rules  = [];
-        foreach ($this->fields() as $field){
+        foreach ($this->fields() as $field) {
             $rules[$field->getName()] = $field->getStoreRules();
         }
         return $rules;
     }
-    public function getUpdateRules(){
+    public function getUpdateRules()
+    {
         $rules  = [];
-        foreach ($this->fields() as $field){
+        foreach ($this->fields() as $field) {
             $rules[$field->getName()] = $field->getUpdateRules();
         }
         return $rules;
@@ -198,7 +207,7 @@ class SingleController extends Model
     public function uploadFilesIfExist()
     {
         $data = request()->except("_token", '_method');
-        foreach ($this->fields() as $field){
+        foreach ($this->fields() as $field) {
             if ($field->isFile() and request()->hasFile($field->getName()) and request($field->getName())) {
                 $fileName =
                     (auth()->user() ? auth()->user()->id : '') . '-' .
@@ -219,7 +228,8 @@ class SingleController extends Model
             }
         }
     }
-    public function setCreateView(){
+    public function setCreateView()
+    {
         return 'single::master.create';
     }
     public function beforeStore()
