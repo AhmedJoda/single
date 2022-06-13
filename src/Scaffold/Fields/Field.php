@@ -20,6 +20,7 @@ class Field
     protected $field_view;
     protected $field_default = '';
     protected $field_callvalue;
+    protected $field_hidden_value;
     public function hashIt() : bool {
         return false;
     }
@@ -109,5 +110,12 @@ class Field
     }
     public function isFile() : bool{
         return false;
+    }
+    public function hiddenValue($value){
+        $this->field_hidden_value = $value;
+        return $this;
+    }
+    public function getHiddenValue(){
+        return $this->field_hidden_value;
     }
 }

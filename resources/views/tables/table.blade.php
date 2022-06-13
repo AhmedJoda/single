@@ -17,7 +17,7 @@
                             {!! $field->getTableValue($item) !!}
                         </td>
                     @endforeach
-                    <td class="px-4 py-3 justify-content-center">
+                    <td width="10%" class="px-4 py-3 justify-content-center">
                         @if($instance->deleting)
                             <form id="deleteForm{{$item->id}}" method="POST" action="{{route("$route.destroy",$item->id)}}" >
                                 @csrf

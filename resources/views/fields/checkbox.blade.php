@@ -1,3 +1,6 @@
+@if($field->getHiddenValue())
+    <input type="hidden" name="{{$field->getName()}}" value="{{$field->getHiddenValue()}}">
+@else
 <label class="block text-sm p-2">
     <input type="hidden" name="{{$field->getName()}}" value="{{$field->getUncheckValue()}}">
     <input id="field-{{$field->getName()}}" type="checkbox" value="{{$field->getCheckedValue()}}" name="{{$field->getName()}}"
@@ -12,3 +15,4 @@
     <p class="text-red-600 m-1">{{$message}}</p>
     @enderror
 </label>
+@endif

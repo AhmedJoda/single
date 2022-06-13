@@ -27,16 +27,17 @@ class SingleController extends Model
     protected $route;
     protected $view;
 
-    final public function __construct($attributes = [])
+    public function __construct($attributes = [])
     {
-        parent::__construct($attributes);
 
+        parent::__construct($attributes);
         $this->setModelName();
         $this->initAttributeNames();
     }
 
     public function singleIndex()
     {
+        $this->bottle();// Scaffold init ;)
         if (method_exists($this, 'query')) {
             ${$this->pluralName} = $this->query($this->model::query())->get();
         } else {
@@ -53,16 +54,19 @@ class SingleController extends Model
 
     public function SingleCreate()
     {
+        $this->bottle();// Scaffold init ;)
         $p_name = Str::ucfirst($this->pluralName);
         $route = $this->route;
         $title = trans('admin.create');
         $fields = $this->fields();
-        return view($this->setCreateView(), compact('route', 'title', 'p_name', 'fields'));
+        $instance = $this;
+        return view($this->setCreateView(), compact('route', 'title','instance', 'p_name', 'fields'));
     }
 
 
     public function singleStore()
     {
+        $this->bottle();// Scaffold init ;)
         $this->validateStoreRequest();
         $this->beforeStore();
 
@@ -80,6 +84,7 @@ class SingleController extends Model
 
     public function singleShow($id)
     {
+        $this->bottle();// Scaffold init ;)
         ${$this->name} = $this->model::find($id);
         $show = $this->model::find($id);
         $title = trans('admin.show');
@@ -89,18 +94,21 @@ class SingleController extends Model
 
     public function singleEdit($id)
     {
+        $this->bottle();// Scaffold init ;)
         $p_name = Str::ucfirst($this->pluralName);
         ${$this->name} = $this->model::find($id);
         $edit = $this->model::find($id);
         $route = $this->route;
         $fields = $this->fields();
         $title = trans('admin.edit');
-        return view("$this->view.edit", compact($this->name, 'edit', 'route', 'title', 'p_name', 'fields'));
+        $instance = $this;
+        return view("$this->view.edit", compact($this->name, 'edit','instance', 'route', 'title', 'p_name', 'fields'));
     }
 
 
     public function singleUpdate($id)
     {
+        $this->bottle();// Scaffold init ;)
         $this->validateUpdateRequest();
 
         $this->beforeUpdate();
@@ -117,6 +125,7 @@ class SingleController extends Model
 
     public function singleDestroy($id)
     {
+        $this->bottle();// Scaffold init ;)
         $this->beforeDestroy();
 
         ${$this->name}  = $this->model::find($id);

@@ -34,15 +34,8 @@ class CheckboxList extends Field
         $this->field_list = $items;
         return $this;
     }
-    public function getTableValue($item)
-    {
-        switch ($item->getOriginal($this->getName())){
-            case $this->field_value_1:
-                return $this->field_title_1;
-            case $this->field_value_0:
-                return $this->field_title_0;
-        }
-        return $this->getDefaultValue();
+    public function getItems(){
+        return $this->field_list;
     }
 
     public function getCheckedValue(){

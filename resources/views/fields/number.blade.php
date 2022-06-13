@@ -1,3 +1,6 @@
+@if($field->getHiddenValue())
+    <input type="hidden" name="{{$field->getName()}}" value="{{$field->getHiddenValue()}}">
+@else
 <label class="block text-sm p-2">
     <span class="text-gray-700 dark:text-gray-400">{{$field->getTitle()}}</span>
     <input type="number" name="{{$field->getName()}}" value="{{old($field->getName(),(isset($edit) ? $edit->getOriginal($field->getName()) : ''))}}"
@@ -6,3 +9,4 @@
     <p class="text-red-600 m-1">{{$message}}</p>
     @enderror
 </label>
+@endif

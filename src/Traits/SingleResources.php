@@ -17,8 +17,6 @@ trait SingleResources
 
     public function initAttributeNames()
     {
-        $this->bottle();// Scaffold init ;)
-
         $array = explode('\\', Str::lower($this->model));
         $name = end($array);
 

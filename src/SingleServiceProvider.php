@@ -18,7 +18,7 @@ class SingleServiceProvider extends ServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'single');
+         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'single');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'single');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 //        if (!is_dir('app/Singles')) {

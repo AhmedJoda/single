@@ -2,7 +2,7 @@
     class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800"
 >
     <div
-        class="p-3 mr-4  rounded-full "
+        class="p-3 mr-4 ml-4  rounded-full "
         style="background-color: {{$iconColor ?? "orange"}}"
     >
         <i style="color: white" class="{{$iconClass ?? "fa fa-list"}}"></i>

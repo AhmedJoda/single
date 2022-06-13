@@ -30,25 +30,28 @@ trait HasSingleRoutes
             return null;
         }
     }
-    public static  function setMiddleware(){
+    public static function setMiddleware(){
         return ['web'];
     }
     public static function routes()
     {
-        if (static::getSingleParent()){
-            Route::middleware(static::setMiddleware())
-                ->prefix(static::getSingleParent())
-                ->name(static::getSingleParent().'.')
-                ->as(static::getSingleParent().'.')
-                ->group(function (){
-                    static::resourceRoutes();
-                });
-        }else{
-            Route::middleware(static::setMiddleware())
-                ->group(function (){
-                    static::resourceRoutes();
-                });
-        }
+        Route::middleware('web')->group(function (){
+            if (static::getSingleParent()){
+                Route::middleware(static::setMiddleware())
+                    ->prefix(static::getSingleParent())
+                    ->name(static::getSingleParent().'.')
+                    ->as(static::getSingleParent().'.')
+                    ->group(function (){
+                        static::resourceRoutes();
+                    });
+            }else{
+                Route::middleware(static::setMiddleware())
+                    ->group(function (){
+                        static::resourceRoutes();
+                    });
+            }
+        });
+        // TODO : api routes pattern
     }
     public static function  resourceRoutes(){
         $single = static::getSingleName();
