@@ -21,13 +21,16 @@ class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources,ScaffoldTrait;
     protected $item;
-    public $model;
-    public $pluralName;
-    public $name;
-    public $route;
+    protected $model;
+    protected $pluralName;
+    protected $name;
+    protected $route;
+    protected $view;
 
-    final public function __construct()
+    final public function __construct($attributes = [])
     {
+        parent::__construct($attributes);
+
         $this->setModelName();
         $this->initAttributeNames();
     }
@@ -45,7 +48,7 @@ class SingleController extends Model
         $title = $this->getIndexTitle();
         $table = Table::make($this->fields())->model($this->model)->route($route);
         $instance = $this;
-        return view("{$this->view}.index", compact($this->pluralName, 'index','instance','title', 'route','p_name','table'));
+        return view("{$this->view}.index", compact($this->pluralName, 'index', 'instance', 'title', 'route', 'p_name', 'table'));
     }
 
     public function SingleCreate()
@@ -65,9 +68,7 @@ class SingleController extends Model
 
         $data = $this->hashingFeilds($this->uploadFilesIfExist());
 
-        $model = new $this->model;
-        $model->fill($data);
-        $model->save();
+        $this->model::create($data);
         
         $this->afterStore();
 
@@ -128,5 +129,4 @@ class SingleController extends Model
 
         return redirect(route("$this->route.index"));
     }
-
 }
