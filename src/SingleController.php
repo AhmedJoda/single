@@ -19,15 +19,19 @@ use Illuminate\Http\Request;
 class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources;
-    public $model;
-    public $pluralName;
-    public $name;
-    public $route;
+    protected $model;
+    protected $pluralName;
+    protected $name;
+    protected $route;
+    protected $view;
 
-    final public function __construct()
+    final public function __construct($attributes = [])
     {
+        parent::__construct($attributes);
+
         $this->setModelName();
         $this->initAttributeNames();
+    
     }
 
     public function singleIndex()
@@ -76,13 +80,12 @@ class SingleController extends Model
     }
     public function singleStore()
     {
+
         $this->validateStoreRequest();
         $this->beforeStore();
         $data = $this->hashingFelids($this->uploadFilesIfExist());
 
-        $model = new $this->model;
-        $model->fill($data);
-        $model->save();
+        $this->model::create($data);
         
         $this->afterStore();
 
