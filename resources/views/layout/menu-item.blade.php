@@ -5,7 +5,8 @@
             $single = new $single();
             $item['route'] = $single->getIndexRoute();
             $item['title'] = $single->getIndexTitle();
-            $item['icon-class'] = 'fa fa-list';
+            if (! isset($item['icon-class']))
+                $item['icon-class'] = 'fa fa-list';
         @endphp
     @endisset
     <a
@@ -15,7 +16,7 @@
         @isset($item['icon-class'])
             <i class="{{$item['icon-class']}}"></i>
         @endisset
-        <span class="ml-4">{{__($item['title'])}}</span>
+        <span class="ml-4 mr-4">{{__($item['title'])}}</span>
     </a>
 
 </li>

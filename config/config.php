@@ -8,6 +8,7 @@ return [
         'name' => 'SingleLte',
         'route-prefix' => 'dashboard',
         'filesystem-disk' => 'local',
+        'dir'   =>  'ltr', # rtl or ltr
     ],
     'top-bar'=>[
         'user-links-items'=>[
