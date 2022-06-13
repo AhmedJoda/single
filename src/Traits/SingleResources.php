@@ -8,16 +8,7 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 trait SingleResources
 {
-    protected function hashingFeilds($data){
-        foreach ($this->fields() as $field){
-            if ($field->hashIt() and $data[$field->getName()]){
-                $data[$field->getName()] = Hash::make($data[$field->getName()]);
-            }elseif ($field->hashIt()){
-                unset($data[$field->getName()]);
-            }
-        }
-        return $data;
-    }
+
     public function setModelName()
     {
         $reflector = new ReflectionClass($this);
@@ -77,7 +68,16 @@ trait SingleResources
     {
         request()->validate($this->getUpdateRules());
     }
-
+    protected function hashingFeilds($data){
+        foreach ($this->fields() as $field){
+            if ($field->hashIt() and $data[$field->getName()]){
+                $data[$field->getName()] = Hash::make($data[$field->getName()]);
+            }elseif ($field->hashIt()){
+                unset($data[$field->getName()]);
+            }
+        }
+        return $data;
+    }
     public function uploadFilesIfExist()
     {
         $data = request()->except("_token", '_method');
