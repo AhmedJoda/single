@@ -14,7 +14,7 @@
                 <tr class="text-gray-700 dark:text-gray-400">
                     @foreach($table->getFields() as $field)
                         <td class="px-4 py-3 text-center">
-                            {!! $field->getTableValue($item) !!}
+                            {!! $field->getTableValue($item)!!}
                         </td>
                     @endforeach
                     <td width="10%" class="px-4 py-3 justify-content-center">

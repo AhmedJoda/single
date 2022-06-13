@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources,ScaffoldTrait;
-    protected $item;
+    protected $single_item;
     protected $model;
     protected $pluralName;
     protected $name;
@@ -72,7 +72,7 @@ class SingleController extends Model
 
         $data = $this->hashingFeilds($this->uploadFilesIfExist());
 
-        $this->model::create($data);
+        $this->single_item = $this->model::create($data);
         
         $this->afterStore();
 
@@ -85,10 +85,10 @@ class SingleController extends Model
     public function singleShow($id)
     {
         $this->bottle();// Scaffold init ;)
-        ${$this->name} = $this->model::find($id);
+        ${$this->pluralName} = $this->model::find($id);
         $show = $this->model::find($id);
         $title = trans('admin.show');
-        return view("$this->view.show", compact($this->name, 'show', 'title'));
+        return view("$this->view.show", compact($this->pluralName, 'show', 'title'));
     }
 
 
@@ -96,13 +96,13 @@ class SingleController extends Model
     {
         $this->bottle();// Scaffold init ;)
         $p_name = Str::ucfirst($this->pluralName);
-        ${$this->name} = $this->model::find($id);
+        ${$this->pluralName} = $this->model::find($id);
         $edit = $this->model::find($id);
         $route = $this->route;
         $fields = $this->fields();
         $title = trans('admin.edit');
         $instance = $this;
-        return view("$this->view.edit", compact($this->name, 'edit','instance', 'route', 'title', 'p_name', 'fields'));
+        return view("$this->view.edit", compact($this->pluralName, 'edit','instance', 'route', 'title', 'p_name', 'fields'));
     }
 
 
@@ -128,9 +128,9 @@ class SingleController extends Model
         $this->bottle();// Scaffold init ;)
         $this->beforeDestroy();
 
-        ${$this->name}  = $this->model::find($id);
-        $this->deleteFilesIfExist(${$this->name});
-        ${$this->name}->delete();
+        ${$this->pluralName}  = $this->model::find($id);
+        $this->deleteFilesIfExist(${$this->pluralName});
+        ${$this->pluralName}->delete();
 
         $this->afterDestroy();
 

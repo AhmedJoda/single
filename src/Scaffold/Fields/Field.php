@@ -29,12 +29,14 @@ class Field
     }
     public function getTableValue($item){
         if ($this->field_callvalue){
-            return $this->field_callvalue($item);
+            $fnc = $this->field_callvalue;
+            return $fnc($item);
         }
         return $this->indexLabel($item);
     }
     public function tableValue(callable $call){
         $this->field_callvalue = $call;
+        return $this;
     }
     public function __construct($title,$name)
     {

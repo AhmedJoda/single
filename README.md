@@ -14,10 +14,16 @@ You can install the package via composer:
 composer require syscape/single
 ```
 
-## Usage
+## publish assets
 
-```php
-// Usage description here
+```bash
+    php artisan vendor:publish --provider="Syscape\Single\SingleServiceProvider" --tag="assets"
+```
+
+## publish config
+
+```bash
+    php artisan vendor:publish --provider="Syscape\Single\SingleServiceProvider" --tag="config"
 ```
 
 ### Testing

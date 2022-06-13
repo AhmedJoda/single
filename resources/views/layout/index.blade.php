@@ -15,6 +15,7 @@
             defer
     ></script>
     <script src="{{asset('vendor/single')}}/js/init-alpine.js"></script>
+    <script src="{{asset('vendor/single')}}/ckeditor/ckeditor.js"></script>
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css"

@@ -20,9 +20,8 @@ trait SingleResources
         $array = explode('\\', Str::lower($this->model));
         $name = end($array);
 
-        if (!isset($this->name)) {
-            $this->name = $name;
-            $this->pluralName = Str::plural($this->name);
+        if (!isset($this->pluralName)) {
+            $this->pluralName = Str::plural($name);
         }
 
         $reflector = new ReflectionClass($this);
