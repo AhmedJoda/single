@@ -21,10 +21,10 @@ class SingleController extends Model
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, SingleResources,ScaffoldTrait;
     protected $item;
-    public $model;
-    public $pluralName;
-    public $name;
-    public $route;
+    protected $model;
+    protected $pluralName;
+    protected $name;
+    protected $route;
     protected $view;
 
     final public function __construct($attributes = [])
