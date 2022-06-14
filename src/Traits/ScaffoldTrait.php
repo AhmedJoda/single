@@ -41,6 +41,7 @@ trait ScaffoldTrait
     }
     ### abstracted
     public function fields(): array { return []; }
+    public function filters(): array { return []; }
     public function bottle(){}
 
 }

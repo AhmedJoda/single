@@ -14,6 +14,11 @@
                 </a>
             </div>
         @endif
+        <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
+            @foreach($instance->filters() as $filter)
+                @include($filter->filter_view_name,compact('filter'))
+            @endforeach
+        </div>
         <div class="w-full overflow-hidden rounded-lg shadow-xs">
             @include('single::tables.table',compact('table','instance'))
         </div>

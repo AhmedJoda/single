@@ -34,20 +34,31 @@ class SingleController extends Model
         $this->setModelName();
         $this->initAttributeNames();
     }
+    public function filterCalled(){
+        foreach ($this->filters() as $filter){
+            if ($filter->called()){
+                return $filter;
+            }
+        }
+    }
 
     public function singleIndex()
     {
         $this->bottle();// Scaffold init ;)
-        if (method_exists($this, 'query')) {
-            ${$this->pluralName} = $this->query($this->model::query())->get();
-        } else {
-            ${$this->pluralName} = $this->model::all();
+        if ($filter = $this->filterCalled()){
+            ${$this->pluralName} = $filter->getQuery()->get();
+        }else{
+            if (method_exists($this, 'query')) {
+                ${$this->pluralName} = $this->query($this->model::query())->get();
+            } else {
+                ${$this->pluralName} = $this->model::all();
+            }
         }
         $p_name = Str::ucfirst($this->pluralName);
         $index = ${$this->pluralName};
         $route = $this->route;
         $title = $this->getIndexTitle();
-        $table = Table::make($this->fields())->model($this->model)->route($route);
+        $table = Table::make($this->fields())->data(${$this->pluralName})->model($this->model)->route($route);
         $instance = $this;
         return view("{$this->view}.index", compact($this->pluralName, 'index', 'instance', 'title', 'route', 'p_name', 'table'));
     }

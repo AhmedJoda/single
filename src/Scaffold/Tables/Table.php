@@ -12,7 +12,8 @@ class Table
         $model ,
         $route ,
         $table_view = 'single::tables.table',
-        $pagiantion_length = 10 ;
+        $pagiantion_length = 10 ,
+        $table_data = null;
     public function __construct($fields)
     {
         $this->fields = $fields;
@@ -38,8 +39,12 @@ class Table
     public function getQuery(){
         return $this->model::query();
     }
+    public function data($data){
+        $this->table_data = $data;
+        return $this;
+    }
     public function getData(){
-        return $this->getModel()::all();
+        return $this->table_data ?? $this->getModel()::all();
     }
     public function getFields(){
         return $this->fields;
