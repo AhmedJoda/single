@@ -48,8 +48,8 @@ class SingleController extends Model
         if ($filter = $this->filterCalled()){
             ${$this->pluralName} = $filter->getQuery()->get();
         }else{
-            if (method_exists($this, 'query')) {
-                ${$this->pluralName} = $this->query($this->model::query())->get();
+            if (method_exists($this, 'singleQuery')) {
+                ${$this->pluralName} = $this->singleQuery($this->model::query())->get();
             } else {
                 ${$this->pluralName} = $this->model::all();
             }
