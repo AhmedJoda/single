@@ -20,6 +20,9 @@
                            @if(old($field->getName().'['.$key.']') == $field->getCheckedValue())
                             checked
                            @endif
+                           @if(isset($edit->{$field->getName()}[$key]))
+                            checked
+                           @endif
                        @endisset
                        class="form-checkbox" placeholder="{{$field->getTitle()}}">
                 <label for="field-{{$field->getName()}}-{{$key}}"

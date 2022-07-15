@@ -78,18 +78,23 @@ class SingleController extends Model
     public function singleStore()
     {
         $this->bottle();// Scaffold init ;)
-        $this->validateStoreRequest();
-        $this->beforeStore();
+        $returned = $this->beforeStore();
+        if ($returned) {
+            return $returned;
+        }
 
-        $data = $this->hashingFeilds($this->uploadFilesIfExist());
+        $data = $this->validateStoreRequest();
+
+        $data = $this->hashingFields($this->uploadFilesIfExist());
 
         $this->single_item = $this->model::create($data);
         
-        $this->afterStore();
+        $returned = $this->afterStore($this->single_item);
+        if ($returned) {
+            return $returned;
+        }
 
-        session()->flash('success', trans('admin.added'));
-
-        return redirect(route("$this->route.index"));
+        return $this->singleStored();
     }
 
 
@@ -120,30 +125,46 @@ class SingleController extends Model
     public function singleUpdate($id)
     {
         $this->bottle();// Scaffold init ;)
-        $this->validateUpdateRequest();
+        
+        $model = $this->model::find($id);
+        $returned = $this->beforeUpdate($model);
+        if ($returned) {
+            return $returned;
+        }
 
-        $this->beforeUpdate();
-        $data = $this->hashingFeilds($this->uploadFilesIfExist());
-        $this->model::find($id)->update($data);
+        $data = $this->validateUpdateRequest();
 
-        $this->afterUpdate();
+        $data = $this->hashingFields($this->uploadFilesIfExist());
+        $updatedModel = $this->model::find($id)->update($data);
 
-        session()->flash('success', trans('admin.updated'));
+        $returned = $this->afterUpdate($updatedModel);
+        if ($returned) {
+            return $returned;
+        }
 
-        return redirect(route("$this->route.index"));
+        return $this->singleUpdated();
     }
 
 
     public function singleDestroy($id)
     {
         $this->bottle();// Scaffold init ;)
-        $this->beforeDestroy();
+        
+        $model  = $this->model::find($id);
+
+        $returned = $this->beforeDestroy($model);
+        if ($returned) {
+            return $returned;
+        }
 
         ${$this->pluralName}  = $this->model::find($id);
         $this->deleteFilesIfExist(${$this->pluralName});
         ${$this->pluralName}->delete();
 
-        $this->afterDestroy();
+        $returned = $this->afterDestroy();
+        if ($returned) {
+            return $returned;
+        }
 
         session()->flash('success', trans('admin.deleted'));
 

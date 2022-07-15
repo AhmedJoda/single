@@ -65,7 +65,7 @@ trait SingleResources
     {
         request()->validate($this->getUpdateRules());
     }
-    protected function hashingFeilds($data){
+    protected function hashingFields($data){
         foreach ($this->fields() as $field){
             if ($field->hashIt() and $data[$field->getName()]){
                 $data[$field->getName()] = Hash::make($data[$field->getName()]);
@@ -103,21 +103,33 @@ trait SingleResources
     {
     }
 
-    public function afterStore()
+    public function afterStore($model)
     {
     }
-    public function beforeUpdate()
+    public function beforeUpdate($model)
     {
     }
 
-    public function afterUpdate()
+    public function afterUpdate($model)
     {
     }
-    public function beforeDestroy()
+    public function beforeDestroy($model)
     {
     }
 
     public function afterDestroy()
     {
+    }
+
+    protected function singleStored()
+    {
+        session()->flash('success', __('Added.'));
+        return redirect(route("$this->route.index"));
+    }
+
+    protected function singleUpdated()
+    {
+        session()->flash('success', __('Updated.'));
+        return redirect(route("$this->route.index"));
     }
 }
