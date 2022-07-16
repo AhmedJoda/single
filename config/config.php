@@ -37,5 +37,12 @@ return [
 //
 //            ]
         ]
-    ]
+],
+    'middleware'=>[
+        'dashboard'=>[
+            'web',
+            'auth',
+            'admin'
+        ],
+    ],
 ];

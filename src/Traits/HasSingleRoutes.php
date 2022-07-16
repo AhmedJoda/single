@@ -31,7 +31,7 @@ trait HasSingleRoutes
         }
     }
     public static function setMiddleware(){
-        return ['web'];
+        return config("single.middleware.".static::getSingleParent(),['web']) ;
     }
     public static function routes()
     {
