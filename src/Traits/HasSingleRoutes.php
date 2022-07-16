@@ -30,9 +30,20 @@ trait HasSingleRoutes
             return null;
         }
     }
+    
     public static function setMiddleware(){
-        return config("single.middleware.".static::getSingleParent(),['web']) ;
+        $class = new static;
+        $model_middleware = $class->middleware;
+        $dashboardMiddleware = config("single.middleware.".static::getSingleParent());
+        if($model_middleware){
+            $middleware = array_merge($model_middleware,$dashboardMiddleware);
+        }else{
+            $middleware = $dashboardMiddleware;
+        }   
+        
+        return $middleware;
     }
+    
     public static function routes()
     {
         Route::middleware('web')->group(function (){
