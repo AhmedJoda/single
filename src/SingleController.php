@@ -83,10 +83,8 @@ class SingleController extends Model
             return $returned;
         }
 
-        $data = $this->validateStoreRequest();
-
+        $this->validateStoreRequest();
         $data = $this->hashingFields($this->uploadFilesIfExist());
-
         $this->single_item = $this->model::create($data);
         
         $returned = $this->afterStore($this->single_item);
@@ -132,10 +130,10 @@ class SingleController extends Model
             return $returned;
         }
 
-        $data = $this->validateUpdateRequest();
+        $this->validateUpdateRequest();
 
         $data = $this->hashingFields($this->uploadFilesIfExist());
-        $updatedModel = $this->model::find($id)->update($data);
+        $updatedModel = tap($this->model::find($id))->update($data);
 
         $returned = $this->afterUpdate($updatedModel);
         if ($returned) {

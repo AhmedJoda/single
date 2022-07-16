@@ -67,11 +67,11 @@ trait SingleResources
     }
     protected function hashingFields($data){
         foreach ($this->fields() as $field){
-            if ($field->hashIt() and $data[$field->getName()]){
+            if ($field->hashIt() and $data[$field->getName()] and $field->isInsertable()){
                 $data[$field->getName()] = Hash::make($data[$field->getName()]);
-            }elseif ($field->hashIt()){
+            }elseif ($field->hashIt() or !$field->isInsertable()){
                 unset($data[$field->getName()]);
-            }
+            } 
         }
         return $data;
     }

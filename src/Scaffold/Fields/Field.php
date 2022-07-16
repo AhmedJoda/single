@@ -3,7 +3,6 @@
 
 namespace Syscape\Single\Scaffold\Fields;
 
-
 use Illuminate\Support\Str;
 use Syscape\Single\Traits\fieldHasRules;
 
@@ -21,24 +20,29 @@ class Field
     protected $field_default = '';
     protected $field_callvalue;
     protected $field_hidden_value;
-    public function hashIt() : bool {
+    protected $insertable = true;
+    public function hashIt() : bool
+    {
         return false;
     }
-    public function indexLabel($item){
+    public function indexLabel($item)
+    {
         return $item->getOriginal($this->getName()) ?? $this->getDefaultValue();
     }
-    public function getTableValue($item){
-        if ($this->field_callvalue){
+    public function getTableValue($item)
+    {
+        if ($this->field_callvalue) {
             $fnc = $this->field_callvalue;
             return $fnc($item);
         }
         return $this->indexLabel($item);
     }
-    public function tableValue(callable $call){
+    public function tableValue(callable $call)
+    {
         $this->field_callvalue = $call;
         return $this;
     }
-    public function __construct($title,$name)
+    public function __construct($title, $name)
     {
         $this->field_title = $title;
         $name = ($name ?? Str::snake($title));
@@ -46,10 +50,10 @@ class Field
         return $this;
     }
 
-    public static function make($title,$name = null)
+    public static function make($title, $name = null)
     {
         $name = ($name ?? Str::snake($title));
-        return new self($title,$name);
+        return new self($title, $name);
     }
     public function editable($editable = true)
     {
@@ -72,52 +76,82 @@ class Field
         return $this;
     }
     public function isEditable(): bool
-    { return $this->editable;}
+    {
+        return $this->editable;
+    }
     public function isCreateable(): bool
-    { return $this->createable;}
+    {
+        return $this->createable;
+    }
     public function isSortable(): bool
-    { return $this->sortable;}
+    {
+        return $this->sortable;
+    }
     public function isSearchable(): bool
-    { return $this->searchable;}
+    {
+        return $this->searchable;
+    }
     public function showInIndex($show = true)
     {
         $this->show_in_index = $show;
         return $this;
     }
-    public function showingInIndex(){
+    public function showingInIndex()
+    {
         return $this->show_in_index;
     }
-    public function setViewName($name){
+    public function setViewName($name)
+    {
         $this->field_view = $name;
     }
-    public function default($value){
-        if (is_callable($value)){
+    public function default($value)
+    {
+        if (is_callable($value)) {
             // TODO
-        }else{
+        } else {
             $this->field_default = $value;
         }
         return $this;
     }
-    public function getViewName(){
+    public function getViewName()
+    {
         return $this->field_view;
     }
-    public function getName(){
+    public function getName()
+    {
         return $this->field_name;
     }
-    public function getTitle(){
+    public function getTitle()
+    {
         return $this->field_title;
     }
-    public function getDefaultValue(){
+    public function getDefaultValue()
+    {
         return $this->field_default;
     }
-    public function isFile() : bool{
+    public function isFile() : bool
+    {
         return false;
     }
-    public function hiddenValue($value){
+    public function hiddenValue($value)
+    {
         $this->field_hidden_value = $value;
         return $this;
     }
-    public function getHiddenValue(){
+    public function getHiddenValue()
+    {
         return $this->field_hidden_value;
     }
+
+    public function insertable($insertable = true)
+    {
+        $this->insertable = $insertable;
+        return $this;
+    }
+
+    public function isInsertable(): bool
+    {
+        return $this->insertable;
+    }
+
 }
