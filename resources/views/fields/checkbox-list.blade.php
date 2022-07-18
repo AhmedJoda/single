@@ -2,7 +2,7 @@
 <input type="hidden" name="{{$field->getName()}}" value="{{$field->getHiddenValue()}}">
 @else
 <label class="block text-sm p-2">
-    <b class="text-gray-700 dark:text-gray-400">{{$field->getTitle()}}</b>
+    <b class="text-gray-700 dark:text-gray-400">{{__($field->getTitle())}}</b>
     <div class="grid md:grid-cols-2">
         @foreach($field->getItems() as $key => $title)
         <div class="">
@@ -22,7 +22,7 @@
             @if(isset($edit->{$field->getName()}[$key]))
             checked
             @endif
-            class="form-checkbox" placeholder="{{$field->getTitle()}}">
+            class="form-checkbox" placeholder="{{__($field->getTitle())}}">
             <label for="field-{{$field->getName()}}-{{$key}}" class="text-gray-700 dark:text-gray-400">{{$title}}</label>
         </div>
         @endforeach
