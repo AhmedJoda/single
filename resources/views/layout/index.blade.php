@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html :class="{ 'theme-dark': dark }" x-data="data()" lang="en">
+<html  x-data="data()" lang="en">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -10,6 +10,10 @@
     />
     <link rel="stylesheet" href="{{asset('vendor/single/fontawesome6/css/all.css')}}">
     <link rel="stylesheet" href="{{asset('vendor/single')}}/css/tailwind.output.css"/>
+    <link rel="stylesheet" href="{{asset('css/main.css')}}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+
     <script
             src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
             defer
@@ -25,20 +29,20 @@
 
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-    @stack('page_head')
+            <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+            @stack('page_head')
 </head>
-<body dir="{{config('single.app.dir','ltr')}}">
+<body class="light" dir="{{config('single.app.dir','ltr')}}">
 <div
-        class="flex h-screen bg-gray-50 dark:bg-gray-900"
+        class="flex h-screen bg-gray-50"
         :class="{ 'overflow-hidden': isSideMenuOpen }"
 >
     <!-- Desktop sidebar -->
     {!! \Syscape\Single\Scaffold\Menu::get() !!}
     <div class="flex flex-col flex-1 w-full">
-        <header class="z-10 py-4 bg-white shadow-md dark:bg-gray-800">
+        <nav class="z-10 py-4 bg-white shadow-md ">
             <div
-                    class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600 dark:text-purple-300"
+                    class="container flex items-center justify-between h-full px-6 mx-auto text-purple-600"
             >
                 <!-- Mobile hamburger -->
                 <button
@@ -59,36 +63,43 @@
                         ></path>
                     </svg>
                 </button>
+                <x-single::locale-switcher />
                 <!-- Search input -->
-                <div class="flex justify-center flex-1 lg:mr-32">
-                    <div
+                @if(\Illuminate\Support\Facades\Route::has(\Illuminate\Support\Facades\Route::current()->getPrefix().'.search'))
+                <form action="{{route(\Illuminate\Support\Facades\Route::current()->getPrefix().'.search')}}">
+                    <div class="flex justify-center flex-1 lg:mr-32">
+                        <div
                             class="relative w-full max-w-xl mr-6 focus-within:text-purple-500"
-                    >
-                        <div class="absolute inset-y-0 flex items-center pl-2">
-                            <svg
+                        >
+                            <div class="absolute inset-y-0 flex items-center pr-2">
+                                <svg
                                     class="w-4 h-4"
                                     aria-hidden="true"
                                     fill="currentColor"
                                     viewBox="0 0 20 20"
-                            >
-                                <path
+                                >
+                                    <path
                                         fill-rule="evenodd"
                                         d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                                         clip-rule="evenodd"
-                                ></path>
-                            </svg>
-                        </div>
-                        <input
-                                class="w-full pl-8 pr-8 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md dark:placeholder-gray-500 dark:focus:shadow-outline-gray dark:focus:placeholder-gray-600 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
+                                    ></path>
+                                </svg>
+                            </div>
+                            <input
+                                class="w-full pl-8 pr-8 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border-0 rounded-md  focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple form-input"
                                 type="text"
-                                placeholder="Search for projects"
+                                name="query"
+
+                                placeholder="{{__('Search')}}"
                                 aria-label="Search"
-                        />
+                            />
+                        </div>
                     </div>
-                </div>
+                </form>
+                @endif
                 <ul class="flex items-center flex-shrink-0 space-x-6">
                     <!-- Theme toggler -->
-                    <li class="flex mr-4 ml-4">
+                    <!-- <li class="flex mr-4 ml-4">
                         <button
                                 class="rounded-md focus:outline-none focus:shadow-outline-purple"
                                 @click="toggleTheme"
@@ -121,91 +132,25 @@
                                 </svg>
                             </template>
                         </button>
-                    </li>
-                    <!-- Notifications menu -->
-                    <li class="relative">
-                        <button
-                                class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
-                                @click="toggleNotificationsMenu"
-                                @keydown.escape="closeNotificationsMenu"
-                                aria-label="Notifications"
-                                aria-haspopup="true"
-                        >
-                            <svg
-                                    class="w-5 h-5"
-                                    aria-hidden="true"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                            >
-                                <path
-                                        d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"
-                                ></path>
-                            </svg>
-                            <!-- Notification badge -->
-                            <span
-                                    aria-hidden="true"
-                                    class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full dark:border-gray-800"
-                            ></span>
-                        </button>
-                        <template x-if="isNotificationsMenuOpen">
-                            <ul
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100"
-                                    x-transition:leave-end="opacity-0"
-                                    @click.away="closeNotificationsMenu"
-                                    @keydown.escape="closeNotificationsMenu"
-                                    class="absolute right-0 w-56 p-2 mt-2 space-y-2 text-gray-600 bg-white border border-gray-100 rounded-md shadow-md dark:text-gray-300 dark:border-gray-700 dark:bg-gray-700"
-                            >
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Messages</span>
-                                        <span
-                                                class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                                        >
-                          13
-                        </span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Sales</span>
-                                        <span
-                                                class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-600 bg-red-100 rounded-full dark:text-red-100 dark:bg-red-600"
-                                        >
-                          2
-                        </span>
-                                    </a>
-                                </li>
-                                <li class="flex">
-                                    <a
-                                            class="inline-flex items-center justify-between w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md hover:bg-gray-100 hover:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-gray-200"
-                                            href="#"
-                                    >
-                                        <span>Alerts</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </template>
-                    </li>
-                    <!-- Profile menu -->
+                    </li> -->
                     {!! \Syscape\Single\Scaffold\TopBar::getUserLinks() !!}
                 </ul>
             </div>
-        </header>
+        </nav>
         <main class="h-full overflow-y-auto">
             @yield('content')
+            <div  class="bottom-footer text-center py-3 bg-gray-900 text-white  ">
+            <x-single::copyright />
+    </div>
         </main>
     </div>
 </div>
+
 <script
         src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"
 ></script>
+<script src="{{asset('js/main.js')}}"></script>
+
 @stack('page-scripts')
 </body>
 </html>
