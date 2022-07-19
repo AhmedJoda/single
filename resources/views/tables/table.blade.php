@@ -1,6 +1,8 @@
 <div>
     <div class="w-full overflow-x-auto text-gray-800  rounded-lg  p-4 py-6 shadow-lg bg-white">
-        <table id="single-table" data-page-length='{{$table->getPaginationLength()}}' class="w-full whitespace-no-wrap">
+        <table 
+        id="single-table-{{is_string($table->getFields()[0]->getTitle()) ? $table->getFields()[0]->getTitle() : '' }}"
+        data-page-length='{{$table->getPaginationLength()}}' class="w-full whitespace-no-wrap">
             <thead>
             <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b bg-gray-50 ">
                 @foreach($table->getFields() as $field)
