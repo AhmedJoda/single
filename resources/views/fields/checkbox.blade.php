@@ -7,10 +7,10 @@
            @isset($edit)
            {{old($field->getName(),$edit->getOriginal($field->getName())?? '') == $field->getCheckedValue() ? "checked" : ""}}
            @else
-           {{old($field->getName()) == $field->getCheckedValue() ? "checked" : ""}}
+           {{old($field->getName(),$field->getDefaultValue()) == $field->getCheckedValue() ? "checked" : ""}}
            @endisset
            class="form-checkbox" placeholder="{{__($field->getTitle())}}">
-    <label for="field-{{$field->getName()}}" class="text-gray-700 dark:text-gray-400">{{__($field->getTitle())}}</label>
+    <label for="field-{{$field->getName()}}" class="text-gray-700">{{__($field->getTitle())}}</label>
     @error($field->getName())
     <p class="text-red-600 m-1">{{$message}}</p>
     @enderror
