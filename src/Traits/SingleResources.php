@@ -70,7 +70,8 @@ trait SingleResources
             if ($field->hashIt() and $data[$field->getName()] and $field->isInsertable()){
                 $data[$field->getName()] = Hash::make($data[$field->getName()]);
             }elseif ($field->hashIt() or !$field->isInsertable()){
-                unset($data[$field->getName()]);
+                $keyNamed = str_replace('[]','',$field->getName());
+                unset($data[$keyNamed]);
             } 
         }
         return $data;
@@ -79,7 +80,7 @@ trait SingleResources
     {
         $data = request()->except("_token", '_method');
         foreach ($this->fields() as $field){
-            if ($field->isFile() and request()->hasFile($field->getName()) and request($field->getName())) {
+            if ($field->isFile() and request()->hasFile($field->getName()) and request($field->getName()) and $field->isInsertable()) {
                 $fileName =
                     (auth()->user() ? auth()->user()->id : '') . '-' .
                     time() . '.' .

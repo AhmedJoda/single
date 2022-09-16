@@ -45,6 +45,7 @@ class Field
     public function __construct($title, $name)
     {
         $this->field_title = $title;
+
         $name = ($name ?? Str::snake($title));
         $this->field_name = $name;
         return $this;
@@ -119,7 +120,9 @@ class Field
     }
     public function getName()
     {
-        return $this->field_name;
+        $field_name = str_replace('[]','',$this->field_name);
+
+        return $field_name;
     }
     public function getTitle()
     {
@@ -133,6 +136,7 @@ class Field
     {
         return false;
     }
+
     public function hiddenValue($value)
     {
         $this->field_hidden_value = $value;
@@ -154,4 +158,9 @@ class Field
         return $this->insertable;
     }
 
+    public function viewName($name)
+    {
+        $this->field_view = $name;
+        return $this;
+    }
 }
