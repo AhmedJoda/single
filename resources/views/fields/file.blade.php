@@ -5,7 +5,7 @@
     <span class="text-gray-700">{{__($field->getTitle())}}</span>
     <input 
     type="file" 
-    name="{{$field->getName()}}"
+    name="{{$field->getName()}}{{$field->isMultiple() ? '[]' : ''}}"
     class="block p-1.5 w-full mt-1 text-sm  focus:border-purple-400 focus:outline-none focus:shadow-outline-purple form-input" 
     placeholder="{{__($field->getTitle())}}"
     {{$field->isMultiple() ? 'multiple' : ''}}>
